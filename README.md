@@ -6,6 +6,7 @@ This idea is similar to twitch donations in particular when you can give bits. T
 - React
 - Replit
 - Solidity
+- Alchemy
 - Caffeine
 
 # Compile contract
@@ -16,3 +17,6 @@ This idea is similar to twitch donations in particular when you can give bits. T
 
 # Deploy to network (goerli)
 `npx hardhat run scripts/deploy.js --network goerli`
+
+# Website
+[here](https://donation-portal.keheira.repl.co)
