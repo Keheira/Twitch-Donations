@@ -104,7 +104,7 @@ describe("DonationPortal Contract Testing", function () {
         await donationContract.connect(user1).addDonation("donation 1", testAmount)
         await donationContract.connect(user2).addDonation("donation 2", testAmount)
 
-        await expect(donationContract.connect(user1).pullDonations(testAmount)).to.be.revertedWith("You aren't the owner")
+        await expect(donationContract.connect(user1).pullDonations()).to.be.revertedWith("You aren't the owner")
     })
 
     it("pullDonations() should allow owner to take an amount of donations", async() => {
@@ -113,7 +113,18 @@ describe("DonationPortal Contract Testing", function () {
         await donationContract.connect(user1).addDonation("donation 1", testAmount)
         await donationContract.connect(user2).addDonation("donation 2", testAmount)
 
-        await donationContract.pullDonations(testAmount)
+        await donationContract.pullDonations()
         expect(await donationContract.publicDonationTotal()).to.equal(2000)
+    })
+
+    it("resetDonations() should allow owner to reset public donations but not private", async() => {
+        const { donationContract, owner, user1, user2, testAmount } = await loadFixture(deployDonationPortalFixture)
+
+        await donationContract.connect(user1).addDonation("donation 1", testAmount)
+        await donationContract.connect(user2).addDonation("donation 2", testAmount)
+
+        await donationContract.resetDonations()
+        expect(await donationContract.getLifetimeDonations()).to.equal(2000)
+        expect(await donationContract.publicDonationTotal()).to.equal(0)
     })
 });

@@ -134,11 +134,8 @@ contract DonationPortal {
     * @notice Allow owner to pull donations from the contract
     * I think oublic might be wrong
     */
-    function pullDonations(uint amount) public isOwner {
-        require(privateDonationTotal >= amount, "Exceeeds available amount");
-
-        owner.transfer(amount);
-        privateDonationTotal -= amount;
+    function pullDonations() public isOwner {
+        owner.transfer(address(this).balance);
     }
 
     /*
@@ -149,10 +146,17 @@ contract DonationPortal {
     }
 
     /*
-    * @notice Return the total amount of donations
+    * @notice Return the total amount of donations at this time
     */
     function getTotalDonations() public view returns (uint){
         return publicDonationTotal;
+    }
+
+    /*
+    * @notice Return the total amount of donations over lifetime
+    */
+    function getLifetimeDonations() public view returns (uint){
+        return privateDonationTotal;
     }
 
     /*
@@ -162,8 +166,8 @@ contract DonationPortal {
         return topDonor;
     }
 
-    function resetDonations() public {
-        pullDonations(privateDonationTotal);
+    function resetDonations() public isOwner{
+        pullDonations();
         publicDonationTotal = 0;
         topDonor = Donation({
             user: address(0),
