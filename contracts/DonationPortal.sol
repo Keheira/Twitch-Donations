@@ -110,13 +110,16 @@ contract DonationPortal {
 
         lastDonationAt[msg.sender] = block.timestamp;
 
+        //TODO: am I sending things??
+        // payable(msg.sender).transfer(amount);
+
         Donation memory newItem = Donation({
             user: msg.sender,
             message: message,
             amount: amount,
             timestamp: block.timestamp
         });
-
+        
         donations.push(newItem);
 
         if (amount > topDonor.amount){
